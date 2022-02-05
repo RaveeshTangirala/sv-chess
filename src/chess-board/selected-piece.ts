@@ -15,71 +15,55 @@ export module SelectedPiece {
   ) {
     let currentPiece = chessBoard[row][column];
     if (isWhiteTurn) {
-      switch (currentPiece) {
-        case Pieces.WhitePawn:
-          possibleMoves = PossibleMoves.getWhitePawnMoves(row, column);
-          break;
-        case Pieces.WhiteKnight:
-          possibleMoves = PossibleMoves.getKnightMoves(
-            row,
-            column,
-            WhitePieces
-          );
-          break;
-        case Pieces.WhiteBishop:
-          possibleMoves = PossibleMoves.getBishopMoves(
-            row,
-            column,
-            WhitePieces
-          );
-          break;
-        case Pieces.WhiteRook:
-          possibleMoves = PossibleMoves.getRookMoves(row, column, WhitePieces);
-          break;
-        case Pieces.WhiteQueen:
-          possibleMoves = PossibleMoves.getBishopMoves(
-            row,
-            column,
-            WhitePieces
-          ).concat(PossibleMoves.getRookMoves(row, column, WhitePieces));
-          break;
-        case Pieces.WhiteKing:
-          possibleMoves = PossibleMoves.getKingMoves(row, column, WhitePieces);
-          break;
-      }
+      possibleMoves = getWhitePieceMoves(currentPiece, row, column);
     } else {
-      switch (currentPiece) {
-        case Pieces.BlackPawn:
-          possibleMoves = PossibleMoves.getBlackPawnMoves(row, column);
-          break;
-        case Pieces.BlackKnight:
-          possibleMoves = PossibleMoves.getKnightMoves(
-            row,
-            column,
-            BlackPieces
-          );
-          break;
-        case Pieces.BlackBishop:
-          possibleMoves = PossibleMoves.getBishopMoves(
-            row,
-            column,
-            BlackPieces
-          );
-          break;
-        case Pieces.BlackRook:
-          possibleMoves = PossibleMoves.getRookMoves(row, column, BlackPieces);
-          break;
-        case Pieces.BlackQueen:
-          possibleMoves = PossibleMoves.getBishopMoves(
-            row,
-            column,
-            BlackPieces
-          ).concat(PossibleMoves.getRookMoves(row, column, BlackPieces));
-          break;
-        case Pieces.BlackKing:
-          possibleMoves = PossibleMoves.getKingMoves(row, column, BlackPieces);
-          break;
-      }
+      possibleMoves = getBlackPieceMoves(currentPiece, row, column);
+    }
+  }
+
+  function getWhitePieceMoves(
+    currentPiece: Pieces,
+    row: number,
+    column: number
+  ): number[][] {
+    switch (currentPiece) {
+      case Pieces.WhitePawn:
+        return PossibleMoves.getWhitePawnMoves(row, column);
+      case Pieces.WhiteKnight:
+        return PossibleMoves.getKnightMoves(row, column, WhitePieces);
+      case Pieces.WhiteBishop:
+        return PossibleMoves.getBishopMoves(row, column, WhitePieces);
+      case Pieces.WhiteRook:
+        return PossibleMoves.getRookMoves(row, column, WhitePieces);
+      case Pieces.WhiteQueen:
+        return PossibleMoves.getBishopMoves(row, column, WhitePieces).concat(
+          PossibleMoves.getRookMoves(row, column, WhitePieces)
+        );
+      case Pieces.WhiteKing:
+        return PossibleMoves.getKingMoves(row, column, WhitePieces);
+    }
+  }
+
+  function getBlackPieceMoves(
+    currentPiece: Pieces,
+    row: number,
+    column: number
+  ): number[][] {
+    switch (currentPiece) {
+      case Pieces.BlackPawn:
+        return PossibleMoves.getBlackPawnMoves(row, column);
+      case Pieces.BlackKnight:
+        return PossibleMoves.getKnightMoves(row, column, BlackPieces);
+      case Pieces.BlackBishop:
+        return PossibleMoves.getBishopMoves(row, column, BlackPieces);
+      case Pieces.BlackRook:
+        return PossibleMoves.getRookMoves(row, column, BlackPieces);
+      case Pieces.BlackQueen:
+        return PossibleMoves.getBishopMoves(row, column, BlackPieces).concat(
+          PossibleMoves.getRookMoves(row, column, BlackPieces)
+        );
+      case Pieces.BlackKing:
+        return PossibleMoves.getKingMoves(row, column, BlackPieces);
     }
   }
 }

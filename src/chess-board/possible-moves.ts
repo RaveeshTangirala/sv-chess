@@ -2,10 +2,7 @@ import { BlackPieces, chessBoard, WhitePieces } from "./chess-board";
 import { Pieces } from "./Pieces";
 
 export module PossibleMoves {
-  export function getWhitePawnMoves(
-    row: number,
-    column: number
-  ): number[][] {
+  export function getWhitePawnMoves(row: number, column: number): number[][] {
     let possibleMoves: number[][] = [];
     if (row === 6) {
       possibleMoves.push([row - 2, column]);
@@ -24,10 +21,7 @@ export module PossibleMoves {
     return possibleMoves;
   }
 
-  export function getBlackPawnMoves(
-    row: number,
-    column: number
-  ): number[][] {
+  export function getBlackPawnMoves(row: number, column: number): number[][] {
     let possibleMoves: number[][] = [];
     if (row === 1) {
       possibleMoves.push([row + 2, column]);
@@ -115,7 +109,6 @@ export module PossibleMoves {
     pieces: Pieces[]
   ): number[][] {
     let possibleMoves: number[][] = [];
-
     let i = row;
     let j = column;
     // up
@@ -145,7 +138,6 @@ export module PossibleMoves {
         break;
       }
     }
-
     return possibleMoves;
   }
 
@@ -155,11 +147,11 @@ export module PossibleMoves {
     pieces: Pieces[]
   ): number[][] {
     let possibleMoves: number[][] = [];
+    let prevRow = row - 1;
+    let nextRow = row + 1;
+    let prevColumn = column - 1;
+    let nextColumn = column + 1;
 
-    let prevRow = row - 1,
-      nextRow = row + 1;
-    let prevColumn = column - 1,
-      nextColumn = column + 1;
     if (prevRow >= 0) {
       if (!pieces.includes(chessBoard[prevRow][prevColumn])) {
         possibleMoves.push([prevRow, prevColumn]);
@@ -191,7 +183,6 @@ export module PossibleMoves {
         possibleMoves.push([nextRow, nextColumn]);
       }
     }
-
     return possibleMoves;
   }
 
