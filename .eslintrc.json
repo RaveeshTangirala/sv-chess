@@ -12,14 +12,15 @@
 	"ignorePatterns": ["rollup.config.js"],
 	"plugins": ["@typescript-eslint", "svelte3"],
 	"overrides": [
-    {
-      "files": ["*.svelte"],
-      "processor": "svelte3/svelte3"
-    }
-  ],
+		{
+			"files": ["*.svelte"],
+			"processor": "svelte3/svelte3"
+		}
+	],
 	"rules": {
 		"no-tabs": "off",
-		"require-jsdoc": "off"
+		"require-jsdoc": "off",
+		"spaced-comment": ["error", "always", { "markers": ["/"] }]
 	},
 	"settings": {
 		"svelte3/typescript": true
