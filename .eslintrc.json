@@ -1,0 +1,27 @@
+{
+	"env": {
+		"browser": true,
+		"es2021": true
+	},
+	"extends": ["google", "eslint:recommended", "prettier"],
+	"parser": "@typescript-eslint/parser",
+	"parserOptions": {
+		"ecmaVersion": "latest",
+		"sourceType": "module"
+	},
+	"ignorePatterns": ["rollup.config.js"],
+	"plugins": ["@typescript-eslint", "svelte3"],
+	"overrides": [
+    {
+      "files": ["*.svelte"],
+      "processor": "svelte3/svelte3"
+    }
+  ],
+	"rules": {
+		"no-tabs": "off",
+		"require-jsdoc": "off"
+	},
+	"settings": {
+		"svelte3/typescript": true
+	}
+}

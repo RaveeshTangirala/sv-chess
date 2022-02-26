@@ -1,4 +1,4 @@
-import { Pieces } from "./Pieces";
+import {Pieces} from './Pieces';
 
 export const BlackPieces: Pieces[] = [
   Pieces.BlackRook,
@@ -18,7 +18,7 @@ export const WhitePieces: Pieces[] = [
   Pieces.WhitePawn,
 ];
 
-export let chessBoard: Pieces[][] = [
+export const chessBoard: Pieces[][] = [
   [
     Pieces.BlackRook,
     Pieces.BlackKnight,
