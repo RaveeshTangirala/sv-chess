@@ -1,23 +1,90 @@
 import { BlackPieces, chessBoard, WhitePieces } from './chess-board';
 import { Pieces } from './Pieces';
-import { PossibleMoves } from './possible-moves';
+import { Castling, PossibleMoves } from './possible-moves';
 
 export module SelectedPiece {
-	export let previousPosition: number[];
-	export let possibleMoves: number[][];
-	export let piece: Pieces;
-	export let isWhite: boolean;
+	let isWhite: boolean = true;
+	let previousPosition: number[];
+	let piece: Pieces;
 
-	export function calculatePossibleMoves(
-		isWhiteTurn: boolean,
-		row: number,
-		column: number
-	) {
+	export function updatePreviousPosition(row: number, column: number): void {
+		previousPosition = [row, column];
+	}
+
+	export function updateCurrentPiece(newPiece: Pieces): void {
+		piece = newPiece;
+	}
+
+	export function getPossibleMoves(row: number, column: number): number[][] {
 		const currentPiece = chessBoard[row][column];
-		if (isWhiteTurn) {
-			possibleMoves = getWhitePieceMoves(currentPiece, row, column);
-		} else {
-			possibleMoves = getBlackPieceMoves(currentPiece, row, column);
+		if (isWhite) {
+			return getWhitePieceMoves(currentPiece, row, column);
+		}
+		return getBlackPieceMoves(currentPiece, row, column);
+	}
+
+	export function move(row: number, column: number): void {
+		chessBoard[row][column] = piece;
+		chessBoard[previousPosition[0]][previousPosition[1]] = Pieces.Empty;
+
+		if (
+			Castling.isWhiteLongCastleAllowed ||
+			Castling.isWhiteShortCastleAllowed ||
+			Castling.isBlackLongCastleAllowed ||
+			Castling.isBlackShortCastleAllowed
+		) {
+			switch (piece) {
+				case Pieces.WhiteRookA:
+					Castling.isWhiteLongCastleAllowed = false;
+					break;
+				case Pieces.WhiteRookH:
+					Castling.isWhiteShortCastleAllowed = false;
+					break;
+				case Pieces.BlackRookA:
+					Castling.isBlackLongCastleAllowed = false;
+					break;
+				case Pieces.BlackRookH:
+					Castling.isBlackShortCastleAllowed = false;
+					break;
+				case Pieces.WhiteKing:
+					castle(isWhite, row, column);
+					Castling.isWhiteShortCastleAllowed = false;
+					Castling.isWhiteLongCastleAllowed = false;
+					break;
+				case Pieces.BlackKing:
+					castle(isWhite, row, column);
+					Castling.isBlackShortCastleAllowed = false;
+					Castling.isBlackLongCastleAllowed = false;
+					break;
+			}
+		}
+
+		isWhite = !isWhite;
+	}
+}
+
+function castle(isWhiteTurn: boolean, row: number, column: number) {
+	if (isWhiteTurn) {
+		// short castle
+		if (Castling.isWhiteShortCastleAllowed && column === 6) {
+			chessBoard[row][7] = Pieces.Empty;
+			chessBoard[row][column - 1] = Pieces.WhiteRookH;
+		}
+		// long castle
+		else if (Castling.isWhiteShortCastleAllowed && column === 2) {
+			chessBoard[row][0] = Pieces.Empty;
+			chessBoard[row][column + 1] = Pieces.WhiteRookA;
+		}
+	} else {
+		// short castle
+		if (Castling.isBlackShortCastleAllowed && column === 6) {
+			chessBoard[row][7] = Pieces.Empty;
+			chessBoard[row][column - 1] = Pieces.BlackRookH;
+		}
+		// long castle
+		else if (Castling.isBlackLongCastleAllowed && column === 2) {
+			chessBoard[row][0] = Pieces.Empty;
+			chessBoard[row][column + 1] = Pieces.BlackRookA;
 		}
 	}
 }
@@ -34,14 +101,15 @@ function getWhitePieceMoves(
 			return PossibleMoves.getKnightMoves(row, column, WhitePieces);
 		case Pieces.WhiteBishop:
 			return PossibleMoves.getBishopMoves(row, column, WhitePieces);
-		case Pieces.WhiteRook:
+		case Pieces.WhiteRookA:
+		case Pieces.WhiteRookH:
 			return PossibleMoves.getRookMoves(row, column, WhitePieces);
 		case Pieces.WhiteQueen:
 			return PossibleMoves.getBishopMoves(row, column, WhitePieces).concat(
 				PossibleMoves.getRookMoves(row, column, WhitePieces)
 			);
 		case Pieces.WhiteKing:
-			return PossibleMoves.getKingMoves(row, column, WhitePieces);
+			return PossibleMoves.getKingMoves(row, column, WhitePieces, true);
 	}
 }
 
@@ -57,13 +125,14 @@ function getBlackPieceMoves(
 			return PossibleMoves.getKnightMoves(row, column, BlackPieces);
 		case Pieces.BlackBishop:
 			return PossibleMoves.getBishopMoves(row, column, BlackPieces);
-		case Pieces.BlackRook:
+		case Pieces.BlackRookA:
+		case Pieces.BlackRookH:
 			return PossibleMoves.getRookMoves(row, column, BlackPieces);
 		case Pieces.BlackQueen:
 			return PossibleMoves.getBishopMoves(row, column, BlackPieces).concat(
 				PossibleMoves.getRookMoves(row, column, BlackPieces)
 			);
 		case Pieces.BlackKing:
-			return PossibleMoves.getKingMoves(row, column, BlackPieces);
+			return PossibleMoves.getKingMoves(row, column, BlackPieces, false);
 	}
 }

@@ -1,12 +1,14 @@
 /* eslint-disable no-unused-vars */
 export enum Pieces {
-	WhiteRook = '♖',
+	WhiteRookA = '♖',
+	WhiteRookH = '♖',
 	WhiteKnight = '♘',
 	WhiteBishop = '♗',
 	WhiteQueen = '♕',
 	WhiteKing = '♔',
 	WhitePawn = '♙',
-	BlackRook = '♜',
+	BlackRookA = '♜',
+	BlackRookH = '♜',
 	BlackKnight = '♞',
 	BlackBishop = '♝',
 	BlackQueen = '♛',

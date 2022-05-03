@@ -1,6 +1,18 @@
 import { BlackPieces, chessBoard, WhitePieces } from './chess-board';
 import { Pieces } from './Pieces';
 
+export module Castling {
+	// eslint-disable-next-line prefer-const
+	export let isWhiteShortCastleAllowed = true;
+	// eslint-disable-next-line prefer-const
+	export let isWhiteLongCastleAllowed = true;
+
+	// eslint-disable-next-line prefer-const
+	export let isBlackShortCastleAllowed = true;
+	// eslint-disable-next-line prefer-const
+	export let isBlackLongCastleAllowed = true;
+}
+
 export module PossibleMoves {
 	export function getWhitePawnMoves(row: number, column: number): number[][] {
 		const possibleMoves: number[][] = [];
@@ -144,7 +156,8 @@ export module PossibleMoves {
 	export function getKingMoves(
 		row: number,
 		column: number,
-		pieces: Pieces[]
+		pieces: Pieces[],
+		isWhiteTurn: boolean
 	): number[][] {
 		const possibleMoves: number[][] = [];
 		const prevRow = row - 1;
@@ -181,6 +194,39 @@ export module PossibleMoves {
 			}
 			if (!pieces.includes(chessBoard[nextRow][nextColumn])) {
 				possibleMoves.push([nextRow, nextColumn]);
+			}
+		}
+
+		// possible moves for castling
+		if (isWhiteTurn) {
+			if (
+				Castling.isWhiteShortCastleAllowed &&
+				chessBoard[row][nextColumn] === Pieces.Empty &&
+				chessBoard[row][nextColumn + 1] === Pieces.Empty
+			) {
+				possibleMoves.push([row, nextColumn + 1]);
+			}
+			if (
+				Castling.isWhiteLongCastleAllowed &&
+				chessBoard[row][prevColumn] === Pieces.Empty &&
+				chessBoard[row][prevColumn - 1] === Pieces.Empty
+			) {
+				possibleMoves.push([row, prevColumn - 1]);
+			}
+		} else {
+			if (
+				Castling.isBlackShortCastleAllowed &&
+				chessBoard[row][nextColumn] === Pieces.Empty &&
+				chessBoard[row][nextColumn + 1] === Pieces.Empty
+			) {
+				possibleMoves.push([row, nextColumn + 1]);
+			}
+			if (
+				Castling.isBlackLongCastleAllowed &&
+				chessBoard[row][prevColumn] === Pieces.Empty &&
+				chessBoard[row][prevColumn - 1] === Pieces.Empty
+			) {
+				possibleMoves.push([row, prevColumn - 1]);
 			}
 		}
 		return possibleMoves;
