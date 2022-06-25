@@ -110,6 +110,8 @@ function getWhitePieceMoves(
 			);
 		case Pieces.WhiteKing:
 			return PossibleMoves.getKingMoves(row, column, WhitePieces, true);
+		default:
+			return [];
 	}
 }
 
@@ -134,5 +136,7 @@ function getBlackPieceMoves(
 			);
 		case Pieces.BlackKing:
 			return PossibleMoves.getKingMoves(row, column, BlackPieces, false);
+		default:
+			return [];
 	}
 }

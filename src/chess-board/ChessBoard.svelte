@@ -12,7 +12,7 @@
 			possibleMoves = [];
 			board = [...chessBoard];
 		} else {
-			updateCurrentSelectedPiece(row, column);
+			updateSelectedPiecePossibleMoves(row, column);
 		}
 	}
 
@@ -22,7 +22,7 @@
 		);
 	}
 
-	function updateCurrentSelectedPiece(row: number, column: number): void {
+	function updateSelectedPiecePossibleMoves(row: number, column: number): void {
 		possibleMoves = SelectedPiece.getPossibleMoves(row, column);
 		SelectedPiece.updatePreviousPosition(row, column);
 		SelectedPiece.updateCurrentPiece(chessBoard[row][column]);
